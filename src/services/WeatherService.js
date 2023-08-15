@@ -1,7 +1,11 @@
 import { DateTime } from "luxon";
+import dotenv from "dotenv"; // Import the dotenv package
 
-const API_KEY = "d6589f659aca8c6ac8c02f857f5d6201";
-const BASE_URL = "https://api.openweathermap.org/data/2.5";
+dotenv.config({ path: "../../.env" }); // Load environment variables from .env file
+
+const API_KEY = process.env.REACT_APP_WEATHER_API_KEY; // Use the loaded environment variable
+const BASE_URL = process.env.REACT_APP_WEATHER_API_BASE_URL; // Use the loaded environment variable
+ 
 
 // const getWeatherData = (infoType, searchParams) => {
 //   const url = new URL(BASE_URL + "/" + infoType);
@@ -26,9 +30,6 @@ const getWeatherData = async (infoType, searchParams) => {
     throw error;
   }
 };
-
-
-
 ///destructuring the array data coming from api
 const formatCurrentWeather = (data) => {
   const {
@@ -59,8 +60,6 @@ const formatCurrentWeather = (data) => {
     speed,
   };
 };
-
-
 
 // const formatForecastWeather = (data) => {
 //   let { timezone, daily, hourly } = data;
@@ -112,9 +111,6 @@ const formatForecastWeather = (data) => {
   return { timezone, daily, hourly };
 };
 
-
-
-
 // const getFormattedWeatherData = async (searchParams) => {
 //   const formattedCurrentWeather = await getWeatherData(
 //     "weather",
@@ -131,12 +127,13 @@ const formatForecastWeather = (data) => {
 //   }).then(formatForecastWeather);
 //   return {...formatCurrentWeather,...formatForecastWeather};
 // };
+
 const getFormattedWeatherData = async (searchParams) => {
   const formattedCurrentWeather = await formatCurrentWeather(
     await getWeatherData("weather", searchParams)
   );
 
-  const { lat, lon } = formattedCurrentWeather; // Not await here
+  const { lat, lon } = formattedCurrentWeather;
 
   const formattedForecastWeather = await formatForecastWeather(
     await getWeatherData("oncall", {
@@ -150,17 +147,15 @@ const getFormattedWeatherData = async (searchParams) => {
   return { ...formattedCurrentWeather, ...formattedForecastWeather };
 };
 
-
-
-
 const formatToLocalTime = (
   secs,
   zone,
   format = "cccc,dd LLL yyyy' | Local time:'hh:mm a"
 ) => DateTime.fromSeconds(secs).setZone(zone).toFormat(format);
 
-const iconUrlFromCode=(code)=>`http://openweathermap.org/img/wn/${code}@2x.png`
+const iconUrlFromCode = (code) =>
+  `http://openweathermap.org/img/wn/${code}@2x.png`;
 
-export {formatToLocalTime,iconUrlFromCode,getFormattedWeatherData}
+export { formatToLocalTime, iconUrlFromCode };
 
 export default getFormattedWeatherData;
