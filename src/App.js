@@ -5,7 +5,7 @@ import TempAndDetails from "./components/TempAndDetails";
 import Forecast from "./components/Forecast";
 import getFormattedWeatherData from "./services/WeatherService";
 
-function App() {
+function App() {a
   // Async function to fetch weather data and log it
   const fetchWeather = async () => {
     try {
