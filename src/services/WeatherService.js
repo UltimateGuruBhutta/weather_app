@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import dotenv from "dotenv"; // Import the dotenv package
 
-dotenv.config({ path: "../../.env" }); // Load environment variables from .env file
+dotenv.config(); // Load environment variables from .env file
 
 const API_KEY = process.env.REACT_APP_WEATHER_API_KEY; // Use the loaded environment variable
 const BASE_URL = process.env.REACT_APP_WEATHER_API_BASE_URL; // Use the loaded environment variable
